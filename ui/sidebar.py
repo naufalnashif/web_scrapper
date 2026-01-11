@@ -9,9 +9,14 @@ from utils.logger import log_activity
 import time
 
 def render_sidebar():
-    # st.sidebar.title("⚙️ Scraper Configuration")
-    with st.sidebar.expander("⚙️ Scraper Configuration", expanded=False):
+    logo_url = "https://raw.githubusercontent.com/naufalnashif/naufalnashif.github.io/main/assets/img/my-logo.png"
+
+
+    with st.sidebar.expander("⚙️ Scraper Configuration", expanded=True):
     
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image(logo_url, use_container_width=True)
         # 1. Platform Selection
         platform_choice = st.selectbox("Platform", ["Instagram", "Shopee", "TikTok"])
 
@@ -23,10 +28,13 @@ def render_sidebar():
             targets = []
 
             # Dinamis berdasarkan platform (menggunakan kode asli Anda)
+            # Di dalam render_sidebar()
             if platform_choice == "Shopee":
-                instruction, placeholder, default_val = "Masukkan SKU (shopid:itemid)", "Contoh: 110546114:21843232230", "110546114:21843232230"
+                instruction = "Masukkan URL Produk/Toko Shopee atau SHOPID:ITEMID"
+                placeholder = "https://shopee.co.id/product/1409463595/27927847951"
+                default_val = "https://shopee.co.id/product/1409463595/27927847951, https://shopee.co.id/basecomtech"
             elif platform_choice == "TikTok":
-                instruction, placeholder, default_val = "Masukkan username", "Contoh: novanov1_", "novanov1_, fanes.aaaa"
+                instruction, placeholder, default_val = "Masukkan username", "Contoh: novanov1_", "novanov1_, mxcvs_"
             else:
                 instruction, placeholder, default_val = "Masukkan Username Instagram", "user1, user2", "naufal.nashif, _self.daily"
 
@@ -61,7 +69,7 @@ def render_sidebar():
             #     help="Batasi jumlah postingan yang diambil untuk setiap target."
             # )
             # Filter Jumlah Postingan
-            use_count_limit = st.checkbox("Limit Post Count", value=True, help="Centang untuk membatasi jumlah postingan yang diambil.")
+            use_count_limit = st.checkbox("Limit Post Count", value=False, help="Centang untuk membatasi jumlah postingan yang diambil.")
             max_posts = 9999 # Default jika tidak dilimit
             if use_count_limit:
                 max_posts = st.number_input("Max Posts per Account", min_value=1, max_value=500, value=10)
@@ -101,7 +109,7 @@ def render_sidebar():
                     elif platform_choice == "Instagram":
                         res = scraper.get_detailed_data(t, max_posts=max_posts, since_date=since_date)
                     else:
-                        res = scraper.get_data(t)
+                        res = scraper.get_data(t, max_posts=max_posts, since_date=since_date)
                     
                     st.session_state.all_results.append(res)
                     

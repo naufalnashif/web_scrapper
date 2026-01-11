@@ -26,24 +26,29 @@ with tab_dash:
     if not st.session_state.all_results:
         st.info("Silahkan konfigurasi target...")
     else:
-        # 1. Identifikasi Platform
         current_platform = st.session_state.all_results[0].get('platform', 'Instagram')
-        
-        # 2. Siapkan Dataframe Universal
         df_profiles = pd.DataFrame([r['profile_info'] for r in st.session_state.all_results if 'error' not in r])
+        
         all_posts = []
         for r in st.session_state.all_results:
-            if 'posts' in r:
+            if 'posts' in r and r['posts']: # Pastikan ada list posts
                 for p in r['posts']:
                     p_copy = p.copy()
-                    p_copy['username'] = r['profile_info']['username']
+                    # Ambil username dari profile_info milik result tersebut
+                    p_copy['username'] = r.get('profile_info', {}).get('username', 'Unknown')
                     all_posts.append(p_copy)
+        
+        # Inisialisasi DataFrame
         df_posts = pd.DataFrame(all_posts)
-        # Di app.py Anda, sebelum pd.to_datetime
-        if not df_posts.empty and 'date' in df_posts.columns:
+
+        # PROTEKSI: Pastikan kolom 'username' selalu ada agar tidak KeyError
+        if 'username' not in df_posts.columns:
+            df_posts['username'] = pd.Series(dtype='str')
+        
+        # Proteksi kolom date
+        if 'date' in df_posts.columns:
             df_posts['date'] = pd.to_datetime(df_posts['date'], errors='coerce')
         else:
-            # Buat kolom date kosong agar baris kode selanjutnya tidak error
             df_posts['date'] = pd.Series(dtype='datetime64[ns]')
 
         # 3. Routing Dashboard Berdasarkan Platform
