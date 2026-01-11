@@ -16,6 +16,13 @@ Platform *Data Intelligence* terintegrasi yang dirancang untuk melakukan ekstrak
 
 ---
 
+## 📺 Demo & Tutorial
+Klik gambar di bawah ini untuk melihat demonstrasi cara penggunaan alat ini di YouTube:
+
+[![Tutorial Demo Scraper](assets/image/yutub-demo.png)](https://youtu.be/E6BiaoW4sE0)
+
+---
+
 ## ✨ Fitur Per Platform
 
 ### 📸 Instagram Analytics
@@ -41,14 +48,17 @@ Platform *Data Intelligence* terintegrasi yang dirancang untuk melakukan ekstrak
 
 ```bash
 # 1. Build image aplikasi
-docker build -t media-scraper-app .
+docker build -t web-scraper-app .
 
 # 2. Jalankan container
 # Memetakan port 8501 lokal ke port 7860 container
-docker run -d -p 8501:7860 --name running-scraper media-scraper-app
+docker run -p 8501:7860 --name running-scraper web-scraper-app   
 
 ```
-`Akses melalui browser di: http://localhost:8501`
+Akses melalui browser di: 
+```
+http://localhost:8501
+```
 
 Beberapa perintah penting untuk mengelola container Anda:
 - Melihat log proses scraping:
