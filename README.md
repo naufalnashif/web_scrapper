@@ -38,15 +38,34 @@ Platform *Data Intelligence* terintegrasi yang dirancang untuk melakukan ekstrak
 ## 📖 Panduan Pengguna
 
 ### 1. Instalasi dengan Docker (Rekomendasi)
+
 ```bash
-# Build image aplikasi
+# 1. Build image aplikasi
 docker build -t media-scraper-app .
 
-# Jalankan container pada port 8501
-docker run -p 8501:8501 media-scraper-app
+# 2. Jalankan container
+# Memetakan port 8501 lokal ke port 7860 container
+docker run -d -p 8501:7860 --name running-scraper media-scraper-app
+
+```
+`Akses melalui browser di: http://localhost:8501`
+
+Beberapa perintah penting untuk mengelola container Anda:
+- Melihat log proses scraping:
+
+```Bash
+docker logs -f running-scraper
 ```
 
-`Akses melalui browser di: http://localhost:8501`
+- Menghentikan aplikasi:
+```Bash
+docker stop running-scraper
+```
+
+- Menghapus container (setelah selesai digunakan):
+```Bash
+docker rm -f running-scraper
+```
 
 ### 2. Kloning Repositori & Instalasi Manual
 Buka terminal dan jalankan perintah berikut:
