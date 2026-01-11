@@ -14,9 +14,10 @@ def render_sidebar():
 
     with st.sidebar.expander("⚙️ Scraper Configuration", expanded=True):
     
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image(logo_url, use_container_width=True)
+        # col1, col2, col3 = st.columns([1, 2, 1])
+        # with col2:
+            # st.image(logo_url, use_container_width=True)
+            # st.image(logo_url, use_column_width=True)
         # 1. Platform Selection
         platform_choice = st.selectbox("Platform", ["Instagram", "Shopee", "TikTok"])
 
