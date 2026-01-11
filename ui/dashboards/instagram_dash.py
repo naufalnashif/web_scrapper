@@ -6,6 +6,11 @@ from utils.exporter import get_download_link
 
 def render_instagram_dashboard(df_profiles, df_posts):
     st.subheader("📸 Instagram Performance Analytics")
+    # PROTEKSI AWAL: Jika dataframe kosong atau kolom 'username' hilang
+    if df_profiles.empty or 'username' not in df_profiles.columns:
+        st.warning("Data profil tidak ditemukan untuk divisualisasikan. Pastikan scraping berhasil di tab Logs.")
+        return
+
     res_tab_ov, res_tab_det = st.tabs(["🏠 Overview Visuals", "📋 Result Details"])
     with res_tab_ov:
         with st.expander("📊 Key Metrics", expanded=True):
