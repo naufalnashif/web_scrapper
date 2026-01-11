@@ -1,30 +1,33 @@
-# Menggunakan image Python resmi yang ringan
 FROM python:3.11-slim
 
-# Mengatur environment variables agar Python tidak membuat file .pyc
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Environment variables untuk Streamlit & Python
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    STREAMLIT_SERVER_PORT=7860 \
+    STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
-# Mengatur direktori kerja di dalam container
 WORKDIR /app
 
-# Menginstal dependensi sistem yang dibutuhkan (untuk library Excel/Pandas)
+# Instalasi dependensi sistem esensial
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
-    software-properties-common \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Menyalin file requirements terlebih dahulu (optimasi cache Docker)
+# Install library Python
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Menyalin seluruh kode aplikasi ke dalam container
-COPY . .
+# Setup user non-root (Wajib untuk Hugging Face)
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
+WORKDIR $HOME/app
+COPY --chown=user . $HOME/app
 
-# Mengekspos port 8501 (Port default Streamlit)
-EXPOSE 8501
+EXPOSE 7860
 
-# Perintah untuk menjalankan aplikasi saat container dimulai
-# Menggunakan alamat 0.0.0.0 agar bisa diakses dari luar container
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
