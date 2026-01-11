@@ -2,7 +2,7 @@ name: Sync to Hugging Face Hub
 on:
   push:
     branches: [main]
-  # Memungkinkan sinkronisasi manual jika diperlukan
+  
   workflow_dispatch:
 
 jobs:
