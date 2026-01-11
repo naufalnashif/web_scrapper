@@ -1,3 +1,15 @@
+---
+title: Web Scrapper Specialist
+emoji: 🚀
+colorFrom: blue
+colorTo: red
+sdk: streamlit
+sdk_version: 1.30.0
+app_file: app.py
+pinned: false
+---
+
+
 # 🚀 Multi-Platform Social & E-Commerce Intelligence Dashboard
 
 Platform *Data Intelligence* terintegrasi yang dirancang untuk melakukan ekstraksi, pemrosesan, dan visualisasi data secara *real-time* dari **Instagram**, **TikTok**, dan **Shopee**. Aplikasi ini menyediakan solusi otomatis untuk riset pasar, pemantauan kompetitor, dan analisis performa produk dalam satu dashboard interaktif.
