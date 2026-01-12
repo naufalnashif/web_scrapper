@@ -27,49 +27,66 @@ with tab_dash:
     if not st.session_state.all_results:
         st.info("Silahkan konfigurasi target...")
     else:
-        # 1. Filter hanya hasil yang memiliki 'profile_info' dan tidak error
+        # 1. Filter hasil yang benar-benar berhasil (punya profile_info)
         valid_results = [r for r in st.session_state.all_results if 'error' not in r and 'profile_info' in r]
         
+        # 2. Penanganan jika GAGAL (valid_results kosong)
         if not valid_results:
-            st.error("Gagal mendapatkan data valid. Silahkan cek tab 'Logs' (Kemungkinan terkena Rate Limit).")
+            # Ambil info platform dan error dari hasil pertama agar tidak NameError
+            first_res = st.session_state.all_results[0]
+            # Gunakan .get() untuk menghindari KeyError
+            error_platform = first_res.get('platform', 'Platform')
+            raw_error_msg = first_res.get('error', 'Tidak ada detail error teknis.')
+
+            st.error(f"### ⚠️ Ups, Data {error_platform} Tidak Dapat Ditampilkan")
+            
+            st.markdown(f"""
+            Kami mencoba menghubungkan ke platform, namun tidak ada data yang bisa diproses.
+            
+            **Saran Langkah Selanjutnya:**
+            * Cek kembali apakah **ID/Username** yang dimasukkan sudah benar.
+            * Periksa koneksi internet atau tab **⚙️ Logs** untuk status Rate Limit.
+            * Tunggu 1-2 menit jika terkena pembatasan frekuensi (Rate Limit).
+            """)
+
+            # Menampilkan Error Asli (Technical Traceback) secara rapi
+            with st.expander("🔍 Lihat Detail Error Teknis (Original Error)"):
+                st.code(raw_error_msg, language="python")
+            
+            if st.button("🔄 Reset & Coba Lagi", use_container_width=True):
+                st.session_state.all_results = []
+                st.rerun()
+        
+        # 3. Penanganan jika BERHASIL
         else:
-            current_platform = valid_results[0].get('platform', 'Instagram')
+            # Ambil platform dari data yang valid
+            current_platform = valid_results[0].get('platform')
             
             # Buat df_profiles secara aman
             df_profiles = pd.DataFrame([r['profile_info'] for r in valid_results])
             
-            # 2. Buat df_posts secara aman
+            # Buat df_posts secara aman
             all_posts = []
             for r in valid_results:
                 if 'posts' in r and isinstance(r['posts'], list):
                     for p in r['posts']:
                         p_copy = p.copy()
-                        p_copy['username'] = r.get('profile_info', {}).get('username', 'Unknown')
+                        # Playstore menggunakan 'app_id', yang lain menggunakan 'username'
+                        u_name = r.get('profile_info', {}).get('username') or r.get('profile_info', {}).get('app_id', 'Unknown')
+                        p_copy['username'] = u_name
                         all_posts.append(p_copy)
             
             df_posts = pd.DataFrame(all_posts)
 
-            # Proteksi kolom minimal agar Plotly tidak crash
-            if df_profiles.empty:
-                df_profiles = pd.DataFrame(columns=['username', 'followers', 'following'])
-            
-            if df_posts.empty:
-                df_posts = pd.DataFrame(columns=['username', 'date'])
-
-            # Proteksi kolom date
+            # Proteksi kolom date untuk visualisasi timeline
             if 'date' in df_posts.columns and not df_posts.empty:
                 df_posts['date'] = pd.to_datetime(df_posts['date'], errors='coerce')
 
-
-            # 3. Routing Dashboard
+            # 4. Routing Dashboard Berdasarkan Platform
             if current_platform == "Instagram":
                 render_instagram_dashboard(df_profiles, df_posts)
-            # elif current_platform == "TikTok":
-            #     render_tiktok_dashboard(df_profiles, df_posts)
-            # Di dalam app.py (Bagian Dashboard TikTok)
             elif current_platform == "TikTok":
-                if 'views' not in df_posts.columns:
-                    df_posts['views'] = 0
+                if 'views' not in df_posts.columns: df_posts['views'] = 0
                 render_tiktok_dashboard(df_profiles, df_posts)
             elif current_platform == "Shopee":
                 render_shopee_dashboard(df_profiles, df_posts)
