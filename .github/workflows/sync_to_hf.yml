@@ -18,4 +18,4 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           # Paksa push ke repositori Space Hugging Face
-          git push --force https://naufalnashif:$HF_TOKEN@huggingface.co/spaces/naufalnashif/web_scrapper main
+          git push --force https://naufalnashif:$HF_TOKEN@huggingface.co/spaces/naufalnashif/web_scrapper_v2 main
