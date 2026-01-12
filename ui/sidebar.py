@@ -6,6 +6,10 @@ from scrapers.instagram import InstagramScraper
 from scrapers.playstore import PlayStoreScraper
 from scrapers.tiktok import TikTokScraper
 from scrapers.shopee import ShopeeScraper
+from scrapers.googlemaps import GoogleMapsScraper
+from scrapers.googlenews import GoogleNewsScraper
+from scrapers.googlejobs import GoogleJobsScraper
+from scrapers.linkedin import LinkedInScraper
 from utils.logger import log_activity
 import time
 
@@ -30,7 +34,7 @@ def render_sidebar():
 
 
         # 1. Platform Selection
-        platform_choice = st.selectbox("Platform", ["Instagram", "Shopee", "TikTok", "PlayStore"], index=0)
+        platform_choice = st.selectbox("Platform", ["Instagram", "Shopee", "TikTok", "PlayStore", "GoogleMaps", "GoogleNews", "GoogleJobs", "LinkedIn"], index=0)
 
         # 2. Input Section
         with st.expander("📥 Input Configuration", expanded=True):
@@ -47,6 +51,14 @@ def render_sidebar():
                 default_val = "https://shopee.co.id/product/1409463595/27927847951, https://shopee.co.id/basecomtech"
             elif platform_choice == "TikTok":
                 instruction, placeholder, default_val = "Masukkan username", "Contoh: novanov1_", "novanov1_, mxcvs_"
+            elif platform_choice == "GoogleMaps":
+                instruction, placeholder, default_val = "Masukkan nama tempat", "Contoh: KFC Terdekat", "KFC Terdekat, Mall Terdekat"
+            elif platform_choice == "GoogleNews":
+                instruction, placeholder, default_val = "Masukkan keyword berita", "Contoh: Ekonomi Indonesia", "Ekonomi Indonesia, Politik Nasional"
+            elif platform_choice == "GoogleJobs":
+                instruction, placeholder, default_val = "Masukkan keyword pekerjaan", "Contoh: Data Analyst", "Data Analyst, Software Engineer"
+            elif platform_choice == "LinkedIn":
+                instruction, placeholder, default_val = "Masukkan keyword pekerjaan", "Contoh: Data Analyst", "Data Analyst, Data Engieneer, Data Scientist, BI Developer"
             elif platform_choice == "Instagram":
                 st.info("💡 Pilih 'Hybrid' jika di Hugging Face, 'Instaloader' jika di Lokal.")
                 ig_method = st.radio("Scraping Method", ["Instaloader (Deep)", "Hybrid (Safe/Fast)"], horizontal=True)
@@ -130,6 +142,14 @@ def render_sidebar():
                     scraper = TikTokScraper()
                 elif platform_choice == "PlayStore":
                     scraper = PlayStoreScraper()
+                elif platform_choice == "GoogleMaps":
+                    scraper = GoogleMapsScraper()
+                elif platform_choice == "GoogleNews":
+                    scraper = GoogleNewsScraper()
+                elif platform_choice == "GoogleJobs":
+                    scraper = GoogleJobsScraper()
+                elif platform_choice == "LinkedIn":
+                    scraper = LinkedInScraper()
                 else:
                     scraper = ShopeeScraper()
                 
@@ -156,7 +176,16 @@ def render_sidebar():
                         elif platform_choice == "PlayStore":
                             # Tetap menggunakan get_data yang sudah stabil
                             res = scraper.get_detailed_data(t, max_posts=max_posts)
-                        
+                        # Di dalam sidebar.py pada bagian logika elif
+                        elif platform_choice == "GoogleMaps":
+                            res = scraper.get_data(t, max_posts=max_posts) 
+                        elif platform_choice == "GoogleNews":
+                            res = scraper.get_data(t, max_posts=max_posts) 
+                        elif platform_choice == "GoogleJobs":
+                            res = scraper.get_data(t, max_posts=max_posts) 
+                        elif platform_choice == "LinkedIn":
+                            res = scraper.get_data(t, max_posts=max_posts) 
+
                         else:
                             # Shopee atau platform lainnya
                             res = scraper.get_data(t, max_posts=max_posts, since_date=since_date)
