@@ -59,6 +59,7 @@ with tab_dash:
             if 'date' in df_posts.columns and not df_posts.empty:
                 df_posts['date'] = pd.to_datetime(df_posts['date'], errors='coerce')
 
+
             # 3. Routing Dashboard
             if current_platform == "Instagram":
                 render_instagram_dashboard(df_profiles, df_posts)

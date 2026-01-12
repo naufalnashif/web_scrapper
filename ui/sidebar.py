@@ -36,8 +36,15 @@ def render_sidebar():
                 default_val = "https://shopee.co.id/product/1409463595/27927847951, https://shopee.co.id/basecomtech"
             elif platform_choice == "TikTok":
                 instruction, placeholder, default_val = "Masukkan username", "Contoh: novanov1_", "novanov1_, mxcvs_"
-            else:
-                instruction, placeholder, default_val = "Masukkan Username Instagram", "user1, user2", "naufal.nashif, _self.daily"
+            # else:
+                # instruction, placeholder, default_val = "Masukkan Username Instagram", "user1, user2", "naufal.nashif, _self.daily"
+            elif platform_choice == "Instagram":
+                st.info("💡 Pilih 'Hybrid' jika di Hugging Face, 'Instaloader' jika di Lokal.")
+                ig_method = st.radio("Scraping Method", ["Instaloader (Deep)", "Hybrid (Safe/Fast)"], horizontal=True)
+                instruction = "Masukkan Username Instagram (delimiter koma atau baris baru)"
+                placeholder = "user1, user2"
+                default_val = "naufal.nashif, _self.daily"
+            
 
             if input_method == "Manual Text":
                 raw_input = st.text_area(instruction, value=default_val, placeholder=placeholder, help="Gunakan koma atau baris baru untuk memisahkan antar target.")
@@ -90,6 +97,7 @@ def render_sidebar():
             else:
                 st.session_state.all_results = [] 
                 
+                # --- INISIALISASI SCRAPER (Satu kali di luar loop) ---
                 if platform_choice == "Instagram":
                     scraper = InstagramScraper()
                 elif platform_choice == "TikTok":
@@ -100,22 +108,36 @@ def render_sidebar():
                 progress_text = st.empty()
                 progress_bar = st.progress(0)
                 
+                # --- LOOP TARGET ---
                 for idx, t in enumerate(targets):
-                    progress_text.text(f"Processing: {t}")
+                    progress_text.text(f"Processing ({idx+1}/{len(targets)}): {t}")
                     log_activity(f"Scraping {t} via {platform_choice}...")
                     
-                    # Eksekusi scraping dengan filter baru
-                    if platform_choice == "TikTok":
-                        res = scraper.get_data(t, max_posts=max_posts, since_date=since_date)
-                    elif platform_choice == "Instagram":
-                        res = scraper.get_detailed_data(t, max_posts=max_posts, since_date=since_date)
-                    else:
-                        res = scraper.get_data(t, max_posts=max_posts, since_date=since_date)
+                    try:
+                        if platform_choice == "Instagram":
+                            # Penambahan logika pemilihan metode khusus Instagram
+                            if ig_method == "Hybrid (Safe/Fast)":
+                                res = scraper.get_data_hybrid(t, max_posts=max_posts, since_date=since_date)
+                            else:
+                                res = scraper.get_detailed_data(t, max_posts=max_posts, since_date=since_date)
+                        
+                        elif platform_choice == "TikTok":
+                            # Tetap menggunakan get_data yang sudah stabil
+                            res = scraper.get_data(t, max_posts=max_posts, since_date=since_date)
+                        
+                        else:
+                            # Shopee atau platform lainnya
+                            res = scraper.get_data(t, max_posts=max_posts, since_date=since_date)
+                        
+                        st.session_state.all_results.append(res)
+                        
+                    except Exception as e:
+                        log_activity(f"Error scraping {t}: {str(e)}")
+                        st.session_state.all_results.append({"error": str(e), "platform": platform_choice})
                     
-                    st.session_state.all_results.append(res)
-                    
+                    # Update Progress
                     progress_bar.progress((idx + 1) / len(targets))
-                    time.sleep(1)
+                    time.sleep(0.5) 
                 
                 progress_text.text("✅ Scraping Selesai!")
                 st.success(f"Berhasil mengambil {len(st.session_state.all_results)} data.")
