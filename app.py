@@ -62,7 +62,12 @@ with tab_dash:
             # 3. Routing Dashboard
             if current_platform == "Instagram":
                 render_instagram_dashboard(df_profiles, df_posts)
+            # elif current_platform == "TikTok":
+            #     render_tiktok_dashboard(df_profiles, df_posts)
+            # Di dalam app.py (Bagian Dashboard TikTok)
             elif current_platform == "TikTok":
+                if 'views' not in df_posts.columns:
+                    df_posts['views'] = 0
                 render_tiktok_dashboard(df_profiles, df_posts)
             elif current_platform == "Shopee":
                 render_shopee_dashboard(df_profiles, df_posts)
