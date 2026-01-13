@@ -4,15 +4,34 @@ emoji: 🚀
 colorFrom: blue
 colorTo: red
 sdk: streamlit
-sdk_version: 1.52.2
+sdk_version: 1.32.2
 app_file: app.py
 pinned: false
 ---
 
+<div align="center">
 
-# 🚀 Multi-Platform Social & E-Commerce Intelligence Dashboard
+  # 🚀 Multi-Platform Intelligence Dashboard
+  
+  ![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
+  ![Streamlit](https://img.shields.io/badge/Streamlit-1.32.2-red.svg)
+  ![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg)
+  ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-Platform *Data Intelligence* terintegrasi yang dirancang untuk melakukan ekstraksi, pemrosesan, dan visualisasi data secara *real-time* dari **Instagram**, **TikTok**, dan **Shopee**. Aplikasi ini menyediakan solusi otomatis untuk riset pasar, pemantauan kompetitor, dan analisis performa produk dalam satu dashboard interaktif.
+</div>
+
+Platform *Data Intelligence* terintegrasi yang dirancang untuk melakukan ekstraksi, pemrosesan, dan visualisasi data secara *real-time* dari berbagai platform media sosial, e-commerce, dan web. Aplikasi ini menyediakan solusi otomatis untuk riset pasar, pemantauan kompetitor, dan analisis performa dalam satu dashboard interaktif.
+
+---
+
+## 📋 Daftar Isi
+- [📺 Demo & Tutorial](#-demo--tutorial)
+- [✨ Fitur Unggulan & Platform](#-fitur-unggulan--platform)
+- [🛠️ Tumpukan Teknologi](#️-tumpukan-teknologi)
+- [🚀 Panduan Instalasi & Penggunaan](#-panduan-instalasi--penggunaan)
+- [🧠 Seluk-beluk Teknis: Strategi Scraping Tingkat Lanjut](#-seluk-beluk-teknis-strategi-scraping-tingkat-lanjut)
+- [🤝 Kontribusi](#-kontribusi)
+- [📜 Lisensi](#-lisensi)
 
 ---
 
@@ -23,42 +42,100 @@ Klik gambar di bawah ini untuk melihat demonstrasi cara penggunaan alat ini di Y
 
 ---
 
-## ✨ Fitur Per Platform
+## ✨ Fitur Unggulan & Platform
+
+Aplikasi ini mendukung ekstraksi data dari berbagai sumber, masing-masing dengan dashboard analitik khusus.
 
 ### 📸 Instagram Analytics
-* **Profile Insights**: Ekstraksi jumlah pengikut, mengikuti, jumlah postingan, dan biografi akun.
-* **Content Performance**: Analisis metrik interaksi pada postingan terbaru.
-* **Engagement Analysis**: Perhitungan otomatis *Engagement Rate* (ER) berbasis performa konten terhadap total pengikut.
+<details>
+<summary>Klik untuk melihat detail fitur Instagram</summary>
+
+*   **Profile Insights**: Ekstraksi jumlah pengikut, akun yang diikuti, total postingan, dan biografi.
+*   **Performance Metrics**: Visualisasi perbandingan pengikut, total postingan, dan frekuensi posting dari waktu ke waktu (harian, mingguan, bulanan).
+*   **Engagement Analysis**: Perhitungan otomatis *Engagement Rate* (ER) dan analisis interaksi pada postingan terbaru.
+*   **Data Export**: Unduh data profil dan postingan dalam format CSV, Excel, dan JSON.
+</details>
 
 ### 🎵 TikTok Analytics
-* **Account Intelligence**: Monitoring statistik profil (followers, likes, video count).
-* **Video Content Tracking**: Pengambilan data caption, jumlah putar (views), dan interaksi pada video terbaru.
-* **Trend Analysis**: Visualisasi distribusi performa konten untuk mengidentifikasi video yang viral.
+<details>
+<summary>Klik untuk melihat detail fitur TikTok</summary>
+
+*   **Creator Intelligence**: Monitoring statistik profil (followers, total likes, jumlah video).
+*   **Content Performance**: Analisis metrik video seperti views, likes, comments, dan shares.
+*   **Trend Analysis**: Visualisasi frekuensi posting untuk mengidentifikasi pola aktivitas konten kreator.
+*   **KPI Dashboard**: Metrik kunci performa seperti Engagement Rate, Total Views, dan Rata-rata Likes per Post.
+</details>
 
 ### 🛍️ Shopee Analytics
-* **Shop Performance**: Ekstraksi rating toko, total pengikut, dan performa respon chat.
-* **Product Catalog Analysis**: Pengambilan data daftar produk mencakup harga SKU, jumlah stok, dan total unit terjual secara historis.
-* **Sales Visualization**: Scatter plot untuk menganalisis korelasi antara popularitas (likes) dengan angka penjualan (sold).
+<details>
+<summary>Klik untuk melihat detail fitur Shopee</summary>
+
+*   **Shop Performance**: Analisis rating toko, jumlah pengikut, dan performa keseluruhan.
+*   **Product Intelligence**: Ekstraksi data katalog produk termasuk harga, stok, total unit terjual, dan jumlah likes.
+*   **Sales Analysis**: Visualisasi korelasi antara popularitas produk (likes) dengan angka penjualan (sold) melalui scatter plot.
+*   **Price Distribution**: Histogram untuk memahami distribusi harga produk di dalam toko.
+</details>
+
+
+### Google News
+<details>
+<summary>Klik untuk melihat detail fitur Google News</summary>
+
+*   **Media Intelligence**: Lacak pemberitaan berdasarkan kata kunci di berbagai media.
+*   **Share of Voice**: Analisis pangsa media (media share) untuk melihat publisher mana yang paling banyak memberitakan suatu topik.
+*   **Trend Monitoring**: Visualisasi tren pemberitaan dari waktu ke waktu untuk mengidentifikasi puncak diskusi.
+*   **Article Details**: Ekstraksi judul, publisher, tanggal publikasi, dan URL sumber berita.
+</details>
+
+### Playstore
+<details>
+<summary>Klik untuk melihat detail fitur Google Play Store</summary>
+
+*   **App Intelligence**: Ekstraksi metadata aplikasi seperti rating, jumlah unduhan, kategori, developer, dan deskripsi.
+*   **Review Analysis**: Kumpulkan ulasan pengguna terbaru, termasuk rating per ulasan, isi komentar, dan versi aplikasi yang diulas.
+*   **Performance Metrics**: Dapatkan data jumlah total review dan skor rata-rata untuk evaluasi sentimen publik.
+</details>
+
+### Google Maps
+<details>
+<summary>Klik untuk melihat detail fitur Google Maps</summary>
+
+*   **Business Intelligence**: Kumpulkan data bisnis berdasarkan kata kunci pencarian, termasuk nama, rating, jumlah review, dan kategori.
+*   **Rating & Popularity**: Visualisasi perbandingan rating antar bisnis dan analisis popularitas berdasarkan jumlah ulasan.
+*   **Category Distribution**: Pie chart untuk memahami distribusi kategori bisnis di area tertentu.
+*   **Data Export**: Unduh daftar bisnis yang di-scrape untuk analisis lebih lanjut.
+</details>
+
+### Google Jobs
+<details>
+<summary>Klik untuk melihat detail fitur Google Jobs</summary>
+
+*   **Talent Intelligence**: Cari dan kumpulkan data lowongan pekerjaan berdasarkan nama perusahaan atau posisi.
+*   **Job Market Analysis**: Ekstraksi judul posisi, portal pekerjaan (publisher), dan tanggal publikasi.
+*   **Data Aggregation**: Mengumpulkan deskripsi pekerjaan dari berbagai sumber untuk analisis kebutuhan skill.
+</details>
 
 ---
 
-## 📖 Panduan Pengguna
+## 🚀 Panduan Instalasi & Penggunaan
 
 ### 1. Instalasi dengan Docker (Rekomendasi)
 
-### Tips Instalasi cepat
-1. Klik file 2x `web_scrapper.command` (MacOS), lalu pilih 1 untuk install dengan Docker
+Metode ini adalah cara termudah dan tercepat untuk menjalankan aplikasi tanpa mengurus dependensi secara manual.
 
-Cara manual:
+**Opsi A: Skrip Otomatis (macOS/Linux)**
+1.  Berikan izin eksekusi pada skrip: `chmod +x web_scrapper.command`
+2.  Jalankan skrip: `./web_scrapper.command`
+3.  Pilih opsi `1` untuk build dan jalankan menggunakan Docker.
 
+**Opsi B: Perintah Manual**
 ```bash
-# 1. Build image aplikasi
+# 1. Build Docker image dari Dockerfile
 docker build -t web-scraper-app .
 
 # 2. Jalankan container
-# Memetakan port 8501 lokal ke port 7860 container
-docker run -p 8501:7860 --name running-scraper web-scraper-app   
-
+# Perintah ini memetakan port 8501 di mesin Anda ke port 7860 di dalam container
+docker run -p 8501:7860 --name running-scraper web-scraper-app
 ```
 Akses melalui browser di: 
 ```
