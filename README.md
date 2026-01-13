@@ -46,6 +46,11 @@ Klik gambar di bawah ini untuk melihat demonstrasi cara penggunaan alat ini di Y
 
 ### 1. Instalasi dengan Docker (Rekomendasi)
 
+### Tips Instalasi cepat
+1. Klik file 2x `web_scrapper.command` (MacOS), lalu pilih 1 untuk install dengan Docker
+
+Cara manual:
+
 ```bash
 # 1. Build image aplikasi
 docker build -t web-scraper-app .
